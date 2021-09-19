@@ -18,12 +18,13 @@ def get_img_files(data_dir: Path) -> List[Path]:
 
 def main():
     parser = argparse.ArgumentParser()
-    # parser.add_argument('--data', type=Path, default=Path('../data/line'))
-    parser.add_argument('--data', type=Path, default=Path('D:/HIPT/WordDetector/data/gialai'))
-    parser.add_argument('--kernel_size', type=int, default=25)
-    parser.add_argument('--sigma', type=float, default=11)
+    parser.add_argument('--data', type=Path, default=Path('./data/gialai'))
+    # parser.add_argument('--data', type=Path, default=Path('D:/HIPT/WordDetector/data/gialai'))
+    parser.add_argument('--kernel_size', type=int, default=21)
+    parser.add_argument('--sigma', type=float, default=9)
     parser.add_argument('--theta', type=float, default=7)
-    parser.add_argument('--min_area', type=int, default=100)
+    parser.add_argument('--min_area', type=int, default=90)
+    # parser.add_argument('--img_height', type=int, default=670)
     parser.add_argument('--img_height', type=int, default=50)
     parsed = parser.parse_args()
 
