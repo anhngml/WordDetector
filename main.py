@@ -20,15 +20,17 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data', type=Path, default=Path('./data/gialai'))
     # parser.add_argument('--data', type=Path, default=Path('D:/HIPT/WordDetector/data/gialai'))
-    parser.add_argument('--kernel_size', type=int, default=21)
-    parser.add_argument('--sigma', type=float, default=9)
+    parser.add_argument('--kernel_size', type=int, default=25)
+    parser.add_argument('--sigma', type=float, default=11)
     parser.add_argument('--theta', type=float, default=7)
-    parser.add_argument('--min_area', type=int, default=90)
+    parser.add_argument('--min_area', type=int, default=200)
     # parser.add_argument('--img_height', type=int, default=670)
     parser.add_argument('--img_height', type=int, default=50)
     parsed = parser.parse_args()
 
-    for fn_img in get_img_files(parsed.data):
+    files = get_img_files(parsed.data)
+
+    for idx, fn_img in enumerate(files):
         print(f'Processing file {fn_img}')
 
         # load image and process it
@@ -39,11 +41,16 @@ def main():
                             theta=parsed.theta,
                             min_area=parsed.min_area)
 
+        orgImg = img if idx % 2 == 0 else prepare_img(cv2.imread(files[idx-1]), parsed.img_height)
+
+        if idx % 2 == 0:
+            continue
+
         # sort detections: cluster into lines, then sort each line
         lines = sort_multiline(detections)
 
         # plot results
-        plt.imshow(img, cmap='gray')
+        plt.imshow(orgImg, cmap='gray')
         num_colors = 7
         colors = plt.cm.get_cmap('rainbow', num_colors)
         for line_idx, line in enumerate(lines):
